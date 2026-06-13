@@ -1,7 +1,11 @@
-const express = require("express");
+import express from "express";
+import {googleLogin} from "../controller/authController.js";
+
 const router = express.Router();
-const { googleLogin } = require("../controller/authController");
 
 router.post("/google", googleLogin);
 
-module.exports = router;
+
+ 
+
+export default router;
