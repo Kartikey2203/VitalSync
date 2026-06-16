@@ -1,0 +1,163 @@
+.vitalsync-landing {
+  background: #1a3a2a;
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.vitalsync-landing * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/* NAV */
+.vitalsync-landing .nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  position: relative;
+  padding-top:50px
+}
+.vitalsync-landing .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.vitalsync-landing .nav-logo svg {
+  width: 32px;
+  height: 32px;
+}
+.vitalsync-landing .nav-logo-svg {
+  fill: none;
+}
+.vitalsync-landing .nav-logo-svg rect {
+  fill: #2e9e6b;
+}
+.vitalsync-landing .nav-logo-svg path {
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.landing-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 80px;
+  background-color: transparent;
+  border-bottom: none;
+  position: relative;
+  width: 100%;
+}
+
+.landing-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.landing-logo-text {
+  display: flex;
+  align-items: center;
+}
+
+.vital {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.sync {
+  font-size: 22px;
+  font-weight: 700;
+  color: #12b76a; /* Matching green for Sync */
+  letter-spacing: -0.5px;
+}
+
+.landing-nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-nav-links a {
+  text-decoration: none;
+  color: #e0ece5; /* Soft light-green-gray */
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.landing-nav-links a:hover {
+  color: #ffffff;
+}
+
+.landing-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.call-us-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e0ece5;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.call-us-link:hover {
+  color: #ffffff;
+}
+
+.phone-icon {
+  stroke: currentColor;
+}
+
+.lets-talk-btn {
+  background-color: #c6f135; /* Bright lime green/yellow */
+  color: #112b1d; /* Dark green text */
+  border: none;
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lets-talk-btn:hover {
+  background-color: #d2f34c;
+  transform: translateY(-1px);
+}
+
+.lets-talk-btn:active {
+  transform: translateY(0);
+}
+
+.start-btn {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 40px;
+  background: #c6f135;
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+}

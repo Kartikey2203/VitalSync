@@ -1,0 +1,293 @@
+/* dashboard.css */
+.vitalsync-landing .dashboard-hero {
+  padding: 100px 40px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.vitalsync-landing .hero-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, background 0.2s;
+  color: #fff;
+}
+
+.vitalsync-landing .hero-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.vitalsync-landing .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  margin-bottom: 16px;
+}
+.vitalsync-landing .card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+.vitalsync-landing .view-all {
+  font-size: 13px;
+  color: #c6f135;
+  cursor: pointer;
+}
+
+/* Grid areas */
+.vitalsync-landing .box-health-score { grid-column: span 3; align-items: center; text-align: center; }
+.vitalsync-landing .box-deficiency-summary { grid-column: span 9; }
+.vitalsync-landing .box-nutrient-overview { grid-column: span 3; }
+.vitalsync-landing .box-ai-insights { grid-column: span 4; }
+.vitalsync-landing .box-meal-plan { grid-column: span 5; }
+.vitalsync-landing .box-top-rec { grid-column: span 6; }
+.vitalsync-landing .box-report-summary { grid-column: span 6; }
+
+/* Health Score Card */
+.vitalsync-landing .score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px dashed rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+.vitalsync-landing .score-circle span {
+  font-size: 38px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+}
+.vitalsync-landing .box-health-score p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 20px;
+}
+.vitalsync-landing .box-health-score h3 { margin-bottom: 16px; font-size: 16px; font-weight: 600; }
+.vitalsync-landing .btn-outline-full {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 50px;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.vitalsync-landing .btn-outline-full:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* Deficiency Summary Grid */
+.vitalsync-landing .deficiency-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  height: 100%;
+}
+.vitalsync-landing .def-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.vitalsync-landing .def-card h4 {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  margin: 0 0 8px 0;
+}
+.vitalsync-landing .def-card .status {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  margin: 0 0 16px 0;
+}
+.vitalsync-landing .progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 6px;
+  width: 100%;
+  overflow: hidden;
+  margin-top: auto;
+}
+.vitalsync-landing .progress {
+  background: #c6f135;
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+}
+
+/* Nutrient Overview */
+.vitalsync-landing .box-nutrient-overview h3 { margin-bottom: 16px; font-size: 16px; font-weight: 600; }
+.vitalsync-landing .nutrient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.vitalsync-landing .nut-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+.vitalsync-landing .nut-item span:first-child { width: 70px; }
+.vitalsync-landing .nut-item span:last-child { width: 40px; text-align: right; }
+.vitalsync-landing .nut-item .bar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  height: 4px;
+  border-radius: 4px;
+}
+
+/* AI Insights */
+.vitalsync-landing .box-ai-insights h3 { margin-bottom: 16px; font-size: 16px; font-weight: 600; }
+.vitalsync-landing .insight-content {
+  background: rgba(198, 241, 53, 0.05);
+  border: 1px solid rgba(198, 241, 53, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  height: 100%;
+}
+.vitalsync-landing .insight-content p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+.vitalsync-landing .btn-outline-small {
+  background: none;
+  border: 1px solid #c6f135;
+  color: #c6f135;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: all 0.2s;
+}
+.vitalsync-landing .btn-outline-small:hover {
+  background: rgba(198, 241, 53, 0.1);
+}
+
+/* Meal Plan Preview */
+.vitalsync-landing .meal-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.vitalsync-landing .tab {
+  font-size: 12px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.vitalsync-landing .tab.active {
+  background: #c6f135;
+  color: #1a2e1a;
+  font-weight: 600;
+}
+.vitalsync-landing .meal-content {
+  display: flex;
+  gap: 12px;
+}
+.vitalsync-landing .meal-col {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 12px;
+}
+.vitalsync-landing .meal-col h4 {
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+.vitalsync-landing .meal-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.vitalsync-landing .meal-col li {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+}
+
+/* Top Recommendations */
+.vitalsync-landing .box-top-rec h3 { margin-bottom: 16px; font-size: 16px; font-weight: 600; }
+.vitalsync-landing .rec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.vitalsync-landing .rec-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* Report Summary */
+.vitalsync-landing .box-report-summary h3 { margin-bottom: 16px; font-size: 16px; font-weight: 600; }
+.vitalsync-landing .rep-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+}
+.vitalsync-landing .rep-row:last-of-type {
+  border-bottom: none;
+  margin-bottom: 20px;
+}
+.vitalsync-landing .text-green { color: #4eb880; font-weight: 600; }
+.vitalsync-landing .text-red { color: #ff5e5e; font-weight: 600; }
+.vitalsync-landing .text-orange { color: #f9a03f; font-weight: 600; }
+
+@media (max-width: 1024px) {
+  .vitalsync-landing .dashboard-hero {
+    grid-template-columns: 1fr;
+  }
+  .vitalsync-landing .box-health-score, 
+  .vitalsync-landing .box-deficiency-summary, 
+  .vitalsync-landing .box-nutrient-overview, 
+  .vitalsync-landing .box-ai-insights, 
+  .vitalsync-landing .box-meal-plan, 
+  .vitalsync-landing .box-top-rec, 
+  .vitalsync-landing .box-report-summary {
+    grid-column: span 1;
+  }
+  .vitalsync-landing .deficiency-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,0 +1,331 @@
+.vitalsync-landing {
+  background: #1a3a2a;
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.vitalsync-landing * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* NAV */
+.vitalsync-landing .nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease, border-bottom 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.vitalsync-landing .nav.scrolled {
+  background: rgba(26, 58, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vitalsync-landing .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+
+.vitalsync-landing .nav-logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+.vitalsync-landing .nav-logo-svg {
+  fill: none;
+}
+
+.vitalsync-landing .nav-logo-svg rect {
+  fill: #2e9e6b;
+}
+
+.vitalsync-landing .nav-logo-svg path {
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.vitalsync-landing .nav-logo-svg circle {
+  fill: #c6f135;
+}
+
+.vitalsync-landing .logo-accent {
+  color: #2e9e6b;
+}
+
+.vitalsync-landing .nav-links {
+  display: flex;
+  gap: 28px;
+  font-size: 5px;
+  list-style: none;
+}
+
+.vitalsync-landing .nav-links a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.vitalsync-landing .nav-links a:hover {
+  color: #fff;
+}
+
+.vitalsync-landing .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.vitalsync-landing .btn-cta {
+  background: #c6f135;
+  color: #1a2e1a;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.vitalsync-landing .btn-cta:hover {
+  background: #d4ff40;
+  transform: translateY(-1px);
+}
+
+/* HERO */
+.vitalsync-landing .hero {
+  text-align: center;
+  position: relative;
+  min-height: calc(100vh - 100px);
+  /* Full screen minus nav height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.vitalsync-landing .trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 28px;
+}
+
+.vitalsync-landing .trust-avatars {
+  display: flex;
+}
+
+.vitalsync-landing .trust-avatars span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid #1a3a2a;
+  margin-left: -6px;
+  background: #2e9e6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.vitalsync-landing .trust-avatars span:first-child {
+  margin-left: 0;
+  background: #4eb880;
+}
+
+.vitalsync-landing .trust-avatars span:nth-child(2) {
+  background: #2e9e6b;
+}
+
+.vitalsync-landing .trust-avatars span:nth-child(3) {
+  background: #1d7a52;
+}
+
+.vitalsync-landing .trust-avatars span:nth-child(4) {
+  background: #c6f135;
+  color: #1a2e1a;
+}
+
+.vitalsync-landing h1 {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.1;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  letter-spacing: -1px;
+}
+
+.vitalsync-landing .hero p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 540px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+.vitalsync-landing .hero-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.vitalsync-landing .btn-primary {
+  background: #c6f135;
+  color: #1a2e1a;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.vitalsync-landing .btn-primary:hover {
+  background: #d4ff40;
+  transform: translateY(-1px);
+}
+
+.vitalsync-landing .btn-primary .arrow {
+  width: 26px;
+  height: 26px;
+  background: #1a2e1a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vitalsync-landing .btn-arrow-svg {
+  fill: none;
+  stroke: #c6f135;
+  stroke-width: 2.5px;
+}
+
+.vitalsync-landing .btn-outline {
+  background: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50px;
+  padding: 13px 26px;
+  font-size: 15px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.vitalsync-landing .btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.vitalsync-landing .btn-view-svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2px;
+}
+
+/* BRAND BAR */
+.vitalsync-landing .brand-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 28px 40px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  justify-items: center;
+  opacity: 0.45;
+  gap: 20px;
+}
+
+.vitalsync-landing .brand-bar span {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+.vitalsync-landing .brand-mono {
+  font-family: monospace;
+}
+
+.vitalsync-landing .brand-sm {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.vitalsync-landing .brand-md {
+  font-size: 18px;
+  letter-spacing: 3px;
+}
+
+.vitalsync-landing .brand-lg {
+  font-size: 20px;
+}
+
+
+/* VIEW TRANSITIONS */
+::view-transition-old(root) {
+  animation: slideOutUp 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+::view-transition-new(root) {
+  animation: slideInUp 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes slideOutUp {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100vh);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100vh);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
