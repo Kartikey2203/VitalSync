@@ -1,20 +1,21 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import reportRoutes from "./src/routes/reportRoutes.js";
 
-dotenv.config();
 
 const app = express();
 
+app.use(express.json());
 
+app.use("/api/reports", reportRoutes);
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }));
 
-app.use(express.json());
 
 connectDB();
 app.use("/api/auth", authRoutes);
@@ -26,4 +27,7 @@ app.get("/", (req, res) => {
 app.listen(5000, () => {
   console.log("Server Running on Port 5000");
   console.log(process.env.MONGO_URI);
+  console.log(process.env.AWS_REGION);
+console.log(process.env.AWS_BUCKET_NAME);
+console.log("KEY:", process.env.AWS_ACCESS_KEY_ID);
 });

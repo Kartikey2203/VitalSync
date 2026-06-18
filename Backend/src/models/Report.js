@@ -11,11 +11,14 @@ const reportSchema = new mongoose.Schema(
     s3Url: String,
     extractedText: String,
     aiSummary: String,
-    aiResult: Object,
+    aiResult: {
+      type: Object,
+      default:{},
+    },
   },
   {
     timestamps: true,
   }
-);
+); 
 
 export default mongoose.model("Report", reportSchema);
