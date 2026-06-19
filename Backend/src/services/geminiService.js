@@ -41,21 +41,25 @@ Return this exact JSON structure:
     "gender": ""
   },
   "healthScore": 0,
+{
   "deficiencies": {
-    "": { "value": "", "status": "Normal|Low|High|Borderline", "severity": "None|Low|Moderate|High" },
-    "": { "value": "", "status": "Normal|Low|High|Borderline", "severity": "None|Low|Moderate|High" },
-    "": { "value": "", "status": "Normal|Low|High|Borderline", "severity": "None|Low|Moderate|High" },
-    "": { "value": "", "status": "Normal|Low|High|Borderline", "severity": "None|Low|Moderate|High" },
-    "": { "value": "", "status": "Normal|Low|High|Borderline", "severity": "None|Low|Moderate|High" },
-    "": { "value": "", "status": "Normal|Low|High|Borderline", "severity": "None|Low|Moderate|High" }
-  },
+    "Hemoglobin": {
+      "value": "",
+      "unit": "",
+      "min": "",
+      "max": "",
+      "status": "Normal|Low|High|Borderline",
+      "severity": "None|Low|Moderate|High"
+    }
+  }
+}
   "nutrients": {
-    "": 0,
-    "": 0,
-    "": 0,
-    "": 0,
-    "": 0,
-    "": 0
+    "": ,
+    "": ,
+    "": ,
+    "": ,
+    "": ,
+    "": 
   },
   "recommendations": [
     "Simple tip 1 based on actual deficiencies found",

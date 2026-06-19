@@ -8,16 +8,18 @@ import reportRoutes from "./src/routes/reportRoutes.js";
 
 const app = express();
 
+// 1. Global Middleware
 app.use(express.json());
-
-app.use("/api/reports", reportRoutes);
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }));
 
-
+// 2. Connect to Database
 connectDB();
+
+// 3. Routes
+app.use("/api/reports", reportRoutes);
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
