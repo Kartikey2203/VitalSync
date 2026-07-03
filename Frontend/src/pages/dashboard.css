@@ -460,3 +460,208 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Report Uploader Styles */
+.vitalsync-landing .dashboard-upload-wrapper {
+  grid-column: span 12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 50vh;
+}
+
+.vitalsync-landing .upload-card {
+  width: 100%;
+  max-width: 640px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 32px;
+  padding: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.vitalsync-landing .upload-card:hover {
+  border-color: rgba(198, 241, 53, 0.25);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+}
+
+.vitalsync-landing .upload-icon-container {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(198, 241, 53, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: #c6f135;
+  box-shadow: 0 0 20px rgba(198, 241, 53, 0.05);
+  transition: all 0.3s ease;
+}
+
+.vitalsync-landing .upload-card:hover .upload-icon-container {
+  transform: scale(1.1);
+  background: rgba(198, 241, 53, 0.15);
+  box-shadow: 0 0 30px rgba(198, 241, 53, 0.15);
+}
+
+.vitalsync-landing .upload-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.vitalsync-landing .upload-card p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin: 0 0 30px 0;
+  max-width: 440px;
+}
+
+.vitalsync-landing .upload-dropzone {
+  width: 100%;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 32px 20px;
+  background: rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.vitalsync-landing .upload-dropzone:hover,
+.vitalsync-landing .upload-dropzone.dragover {
+  border-color: #c6f135;
+  background: rgba(198, 241, 53, 0.03);
+}
+
+.vitalsync-landing .upload-dropzone-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.vitalsync-landing .upload-dropzone-subtext {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.vitalsync-landing .btn-select-file {
+  background: #c6f135;
+  color: #0A1A10;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vitalsync-landing .btn-select-file:hover {
+  background: #d4f754;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(198, 241, 53, 0.3);
+}
+
+.vitalsync-landing .upload-error-message {
+  margin-top: 16px;
+  padding: 12px 20px;
+  background: rgba(255, 94, 94, 0.1);
+  border: 1px solid rgba(255, 94, 94, 0.2);
+  border-radius: 12px;
+  color: #ff5e5e;
+  font-size: 13px;
+  text-align: left;
+  width: 100%;
+}
+
+.vitalsync-landing .upload-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 0;
+}
+
+.vitalsync-landing .upload-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(198, 241, 53, 0.1);
+  border-top-color: #c6f135;
+  border-radius: 50%;
+  animation: upload-spin 1s linear infinite;
+}
+
+@keyframes upload-spin {
+  to { transform: rotate(360deg); }
+}
+
+.vitalsync-landing .upload-loading-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.vitalsync-landing .upload-loading-subtext {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  animation: upload-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes upload-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Header bar modifications for upload new action */
+.vitalsync-landing .dashboard-actions-header {
+  grid-column: span 12;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.vitalsync-landing .dashboard-actions-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.vitalsync-landing .btn-upload-new {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vitalsync-landing .btn-upload-new:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(198, 241, 53, 0.5);
+  color: #c6f135;
+}

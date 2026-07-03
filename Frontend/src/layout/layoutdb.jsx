@@ -1,5 +1,5 @@
-import Sidebar from "../components/sidebar";
-import Topbar from "../components/header";
+// import Sidebar from "../components/sidebar";
+// import Topbar from "../components/header";
 
 function DashboardLayout({ children }) {
   return (

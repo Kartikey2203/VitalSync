@@ -7,8 +7,14 @@ import DashboardContent from '../components/DashboardContent';
 function Home() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setIsScrolled(true);
@@ -20,6 +26,13 @@ function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    window.location.reload();
+  };
 
   const scrollToDashboard = () => {
     const dashboardElement = document.getElementById('dashboard-section');
@@ -46,16 +59,29 @@ function Home() {
           <span>Vital<span className="logo-accent">Sync</span></span>
         </div>
         <ul className="nav-links">
-          <li><a href="#" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a></li>
+          <li><a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a></li>
           <li><a href="/dashboard" onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }}>Overview</a></li>
-          <li><a href="#" onClick={(e) => { e.preventDefault(); }}>Records</a></li>
-          <li><a href="#" onClick={(e) => { e.preventDefault(); }}>Diagnose</a></li>
+          <li><a href="/records" onClick={(e) => { e.preventDefault(); navigate('/records'); }}>Records</a></li>
+          <li><a href="/diagnose" onClick={(e) => { e.preventDefault(); navigate('/diagnose'); }}>Diagnose</a></li>
         </ul>
         <div className="nav-right">
-          <button className="btn-outline" onClick={() => navigate('/login')}>
-            Login
-          </button>
-          <button className="btn-cta" onClick={() => navigate('/login')}>Get Started</button>
+          {user ? (
+            <>
+              <span style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', fontWeight: '500' }}>
+                Hello, {user.name}
+              </span>
+              <button className="btn-outline" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn-outline" onClick={() => navigate('/login')}>
+                Login
+              </button>
+              <button className="btn-cta" onClick={() => navigate('/login')}>Get Started</button>
+            </>
+          )}
         </div>
       </nav>
       
@@ -64,7 +90,7 @@ function Home() {
         <h1>Upload Reports,<br/>Understand Your Health.<br/></h1>
         <p>VitalSync Analyze lab reports, detect deficiencies, track health records,<br/> and receive personalized health recommendations using AI.</p>
         <div className="hero-btns">
-          <button className="btn-primary" onClick={() => navigate('/login')}>
+          <button className="btn-primary" onClick={() => navigate(user ? '/dashboard' : '/login')}>
             Get Started
             <div className="arrow">
               <svg width="12" height="12" viewBox="0 0 24 24" className="btn-arrow-svg">

@@ -1,25 +1,153 @@
-import React, { useEffect, useState } from "react";
-import { getLatestReport } from "../services/reportService";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { uploadReport, getLatestReport } from "../services/reportService";
 
 function DashboardContent() {
-const [report, setReport] = useState(null);
-const [loading, setLoading] = useState(true);
-const [selectedDay, setSelectedDay] = useState("day1");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const [report, setReport] = useState(null);
+  const [selectedDay, setSelectedDay] = useState("day1");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [isDragOver, setIsDragOver] = useState(false);
 
-useEffect(() => {
-  const fetchReport = async () => {
-    try {
-      const data = await getLatestReport();
-      setReport(data.report);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (token) {
+      const fetchLatest = async () => {
+        try {
+          const data = await getLatestReport();
+          if (data && data.report) {
+            setReport(data.report);
+          }
+        } catch (err) {
+          console.error("Error fetching latest report:", err);
+        }
+      };
+      fetchLatest();
+    }
+  }, [token]);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      await processUpload(file);
     }
   };
 
-  fetchReport();
-}, []);
+  const handleFileSelect = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      await processUpload(file);
+    }
+  };
+
+  const processUpload = async (file) => {
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const data = await uploadReport(file);
+      if (data.success && data.report) {
+        setReport(data.report);
+      } else {
+        setUploadError(data.message || "Failed to process report.");
+      }
+    } catch (err) {
+      console.error(err);
+      setUploadError(
+        err.response?.data?.message || err.message || "Error uploading file. Make sure backend is running."
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  if (!report) {
+    return (
+      <div className="dashboard-hero" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div className="dashboard-upload-wrapper">
+          <div className="upload-card">
+            {!token ? (
+              <>
+                <div className="upload-icon-container">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="8.5" cy="7" r="4" />
+                    <line x1="20" y1="8" x2="20" y2="14" />
+                    <line x1="23" y1="11" x2="17" y2="11" />
+                  </svg>
+                </div>
+                <h2>Track Your Health Records</h2>
+                <p>To analyze your medical reports, track deficiencies, and receive personalized health plans, please log in or sign up first.</p>
+                <button 
+                  className="btn-select-file" 
+                  style={{ width: "100%", padding: "14px", fontSize: "15px", marginTop: "10px" }}
+                  onClick={() => navigate("/login")}
+                >
+                  Sign In / Sign Up
+                </button>
+              </>
+            ) : uploading ? (
+              <div className="upload-loading-container">
+                <div className="upload-spinner"></div>
+                <div className="upload-loading-text">Analyzing your lab report...</div>
+                <div className="upload-loading-subtext">Gemini is extracting medical markers and calculating health scores</div>
+              </div>
+            ) : (
+              <>
+                <div className="upload-icon-container">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <h2>Analyze Your Lab Report</h2>
+                <p>Upload your blood test or lab report (PDF/Image) to see your AI-powered health insights, deficiencies, meal plans, and more.</p>
+                <div 
+                  className={`upload-dropzone ${isDragOver ? "dragover" : ""}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => document.getElementById("report-file-input").click()}
+                >
+                  <span className="upload-dropzone-text">Drag & drop your file here, or click to browse</span>
+                  <span className="upload-dropzone-subtext">Supports PDF, PNG, JPG up to 10MB</span>
+                  <input 
+                    type="file" 
+                    id="report-file-input" 
+                    style={{ display: "none" }} 
+                    accept=".pdf,image/*"
+                    onChange={handleFileSelect}
+                  />
+                  <button className="btn-select-file" onClick={(e) => {
+                    e.stopPropagation();
+                    document.getElementById("report-file-input").click();
+                  }}>Choose File</button>
+                </div>
+                {uploadError && (
+                  <div className="upload-error-message">
+                    <strong>Upload failed:</strong> {uploadError}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const healthScore = report?.aiResult?.healthScore;
   let healthStatus = "--";
   let statusColor = "rgba(255,255,255,0.5)";
@@ -39,6 +167,18 @@ useEffect(() => {
 
   return (
     <div className="dashboard-hero">
+      {/* Dashboard Actions Header */}
+      <div className="dashboard-actions-header">
+        <h2>Dashboard</h2>
+        <button className="btn-upload-new" onClick={() => setReport(null)}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          Upload New Report
+        </button>
+      </div>
 
       {/* 1. Overall Health Score */}
       <div className="hero-card box-health-score" style={{ justifyContent: "center" }}>
@@ -74,9 +214,11 @@ useEffect(() => {
                 <div className="def-card" key={key}>
                   <h4 style={{ textTransform: "capitalize" }}>{key.replace(/([A-Z])/g, ' $1').trim()}</h4>
                   <p className="status" style={{ color: style.color }}>{data.status || "--"}</p>
-                  {data.value && (
+                  {data.value !== undefined && data.value !== null && (
                     <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", marginBottom: "6px" }}>
-                      Value: <strong style={{ color: "rgba(255,255,255,0.75)" }}>{data.value}</strong>
+                      Value: <strong style={{ color: "rgba(255,255,255,0.75)" }}>
+                        {typeof data.value === "object" ? JSON.stringify(data.value) : data.value}
+                      </strong>
                     </span>
                   )}
                   <div className="progress-bar">
@@ -134,20 +276,25 @@ useEffect(() => {
         <h3>Nutrient Overview</h3>
         <div className="nutrient-list">
           {report?.aiResult?.nutrients ? (
-            Object.entries(report.aiResult.nutrients).map(([key, val]) => (
-              <div className="nut-item" key={key}>
-                <div className="nut-item-row">
-                  <span style={{ textTransform: "capitalize" }}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                  <span>{val}%</span>
+            Object.entries(report.aiResult.nutrients).map(([key, val]) => {
+              // val may be a plain number or an object { value, status }
+              const raw = typeof val === "object" && val !== null ? val.value : val;
+              const numVal = raw != null && !isNaN(Number(raw)) ? Number(raw) : null;
+              return (
+                <div className="nut-item" key={key}>
+                  <div className="nut-item-row">
+                    <span style={{ textTransform: "capitalize" }}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                    <span>{numVal != null ? `${numVal}%` : "--"}</span>
+                  </div>
+                  <div className="bar">
+                    <div
+                      className="fill"
+                      style={{ width: numVal != null ? `${numVal}%` : "0%", height: "100%", borderRadius: "6px" }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="bar">
-                  <div
-                    className="fill"
-                    style={{ width: `${val}%`, height: "100%", borderRadius: "6px" }}
-                  ></div>
-                </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <>
               {["Iron", "Vitamin D", "Vitamin B12", "Calcium", "Folate", "Magnesium"].map((name) => (

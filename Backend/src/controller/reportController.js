@@ -1,6 +1,6 @@
 import s3 from "../services/s3Services.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { extractMedicalData } from "../services/geminiService.js";
+import { extractMedicalData, chatWithGemini } from "../services/geminiService.js";
 import Report from "../models/Report.js";
 
 export const uploadReport = async (req, res) => {
@@ -94,9 +94,9 @@ catch (error) {
 //       message: error.message,
 //     });
 //   }}
-  export const getLatestReport = async (req, res) => {
+export const getLatestReport = async (req, res) => {
   try {
-    const report = await Report.findOne()
+    const report = await Report.findOne({ userId: req.user?._id })
       .sort({ createdAt: -1 });
 
   return  res.status(200).json({
@@ -105,6 +105,72 @@ catch (error) {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getAllReports = async (req, res) => {
+  try {
+    const reports = await Report.find({ userId: req.user?._id })
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      reports,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const deleteReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const report = await Report.findOneAndDelete({ _id: id, userId: req.user?._id });
+    
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Report not found or not authorized to delete",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Report deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const chatDiagnose = async (req, res) => {
+  try {
+    const { message, history } = req.body;
+
+    if (!message) {
+      return res.status(400).json({
+        success: false,
+        message: "Message is required",
+      });
+    }
+
+    const reply = await chatWithGemini(message, history);
+
+    return res.status(200).json({
+      success: true,
+      reply,
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
       message: error.message,
     });

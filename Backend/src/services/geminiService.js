@@ -7,7 +7,7 @@ const ai = new GoogleGenAI({
 export const extractMedicalData = async (buffer, mimeType) => {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-1.5-flash",
       contents: [
         {
           inlineData: {
@@ -110,6 +110,48 @@ Return this exact JSON structure:
 return JSON.parse(cleaned);
   } catch (error) {
     console.error("Gemini Error:", error);
+    throw error;
+  }
+};
+
+export const chatWithGemini = async (message, history = []) => {
+  try {
+    const formattedContents = [];
+    
+    // Format history for Gemini
+    history.forEach(item => {
+      formattedContents.push({
+        role: item.role === "user" ? "user" : "model",
+        parts: [{ text: item.text }]
+      });
+    });
+    
+    // Add the new user message
+    formattedContents.push({
+      role: "user",
+      parts: [{ text: message }]
+    });
+
+    const systemPrompt = `You are VitalSync's AI Health Assistant, a professional and helpful medical chatbot.
+Your main role is to answer health, medical, wellness, fitness, diet, and nutrition questions.
+
+CRITICAL RULES:
+1. ONLY answer questions related to health, fitness, diet, nutrition, wellness, medicine, symptoms, diseases, or medical tests.
+2. If the user asks about ANY other topic (for example: coding, math, general trivia, history, movies, writing code, or general chatting not related to wellness), you must politely but firmly decline to answer.
+   - Example refusal response: "I'm sorry, but as the VitalSync Health Assistant, I can only help you with health, fitness, medical, and wellness related questions."
+3. Keep your advice informative, friendly, and structured. Always advise the user to consult a human medical doctor or healthcare provider for professional medical diagnosis.`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: formattedContents,
+      config: {
+        systemInstruction: systemPrompt
+      }
+    });
+
+    return response.text;
+  } catch (error) {
+    console.error("Gemini Chat Error:", error);
     throw error;
   }
 };

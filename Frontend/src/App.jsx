@@ -2,6 +2,8 @@ import DashboardLayout from "./layout/layoutdb";
 import Dashboard from "./pages/dashboard";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/login";
+import Records from "./pages/records";
+import Diagnose from "./pages/diagnose";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -11,6 +13,14 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/dashboard" element={<DashboardLayout>
         <Dashboard />
+      </DashboardLayout>
+      } />
+      <Route path="/records" element={<DashboardLayout>
+        <Records />
+      </DashboardLayout>
+      } />
+      <Route path="/diagnose" element={<DashboardLayout>
+        <Diagnose />
       </DashboardLayout>
       } />
       <Route path="/" element={<Home/>} />
