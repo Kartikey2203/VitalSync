@@ -51,7 +51,7 @@ useEffect(() => {
         <h4 style={{ color: statusColor, fontSize: "24px", fontWeight: "700", margin: "0 0 24px 0", letterSpacing: "1px" }}>
           {healthStatus}
         </h4>
-        <button className="btn-outline-full">View Full Analysis</button>
+        {/* <button className="btn-outline-full">View Full Analysis</button> */}
       </div>
 
       {/* 2. Deficiency Summary */}
