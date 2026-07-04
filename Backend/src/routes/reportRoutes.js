@@ -4,7 +4,8 @@ import {
   getLatestReport,
   getAllReports,
   deleteReport,
-  chatDiagnose
+  chatDiagnose,
+  claimOrphanedReports
 } from "../controller/reportController.js";
 import upload from "../middleware/uploadMiddleware.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -23,5 +24,6 @@ router.get("/latest", protect, getLatestReport);
 router.get("/all", protect, getAllReports);
 router.delete("/:id", protect, deleteReport);
 router.post("/diagnose", protect, chatDiagnose);
+router.post("/claim-orphaned", protect, claimOrphanedReports);
 
 export default router;

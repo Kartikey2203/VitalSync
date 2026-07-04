@@ -87,9 +87,10 @@ function Diagnose() {
       }
     } catch (err) {
       console.error(err);
+      const errMsg = err?.response?.data?.message || "Error communicating with the health bot. Please check your network or try again.";
       setMessages((prev) => [
         ...prev,
-        { role: "model", text: "Error communicating with the health bot. Please check your network or try again." },
+        { role: "model", text: errMsg },
       ]);
     } finally {
       setLoading(false);

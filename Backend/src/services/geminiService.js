@@ -5,19 +5,9 @@ const ai = new GoogleGenAI({
 });
 
 export const extractMedicalData = async (buffer, mimeType) => {
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-1.5-flash",
-      contents: [
-        {
-          inlineData: {
-            data: buffer.toString("base64"),
-            mimeType,
-          },
-        },
-        {
+  const MODELS_TO_TRY = ["gemini-2.5-flash", "gemini-2.0-flash-lite", "gemini-2.0-flash"];
 
-  text: `You are a medical report analysis assistant for VitalSync, an Indian health dashboard app.
+  const prompt = `You are a medical report analysis assistant for VitalSync, an Indian health dashboard app.
 
 Analyze the uploaded lab report image carefully and extract all test values.
 
@@ -35,59 +25,23 @@ CRITICAL RULES:
 Return this exact JSON structure:
 
 {
-  "patientInfo": {
-    "name": "",
-    "age": "",
-    "gender": ""
-  },
+  "patientInfo": { "name": "", "age": "", "gender": "" },
   "healthScore": 0,
-{
   "deficiencies": {
     "Hemoglobin": {
-      "value": "",
-      "unit": "",
-      "min": "",
-      "max": "",
+      "value": "", "unit": "", "min": "", "max": "",
       "status": "Normal|Low|High|Borderline",
       "severity": "None|Low|Moderate|High"
     }
-  }
-}
-  "nutrients": {
-    "": ,
-    "": ,
-    "": ,
-    "": ,
-    "": ,
-    "": 
   },
-  "recommendations": [
-    "Simple tip 1 based on actual deficiencies found",
-    "Simple tip 2",
-    "Simple tip 3",
-    "Simple tip 4"
-  ],
+  "nutrients": { "nutrientName": 0 },
+  "recommendations": ["Tip 1", "Tip 2", "Tip 3", "Tip 4"],
   "insights": {
-    "summary": "2-3 sentence plain English summary of the report for a non-medical person",
-    "healthRisks": [
-      "Risk 1 explained simply",
-      "Risk 2 explained simply",
-      "Risk 3 explained simply"
-    ],
-    "lifestyleAdvice": [
-      "Daily habit tip 1",
-      "Daily habit tip 2",
-      "Daily habit tip 3",
-      "Daily habit tip 4"
-    ]
+    "summary": "2-3 sentence plain English summary",
+    "healthRisks": ["Risk 1", "Risk 2", "Risk 3"],
+    "lifestyleAdvice": ["Tip 1", "Tip 2", "Tip 3", "Tip 4"]
   },
-  "reportSummary": {
-    "totalTests": 0,
-    "normal": 0,
-    "low": 0,
-    "high": 0,
-    "borderline": 0
-  },
+  "reportSummary": { "totalTests": 0, "normal": 0, "low": 0, "high": 0, "borderline": 0 },
   "mealPlan": {
     "day1": { "breakfast": "", "lunch": "", "dinner": "" },
     "day2": { "breakfast": "", "lunch": "", "dinner": "" },
@@ -97,42 +51,44 @@ Return this exact JSON structure:
     "day6": { "breakfast": "", "lunch": "", "dinner": "" },
     "day7": { "breakfast": "", "lunch": "", "dinner": "" }
   }
-}`
-        }
-     ],
-    });
+}`;
 
-  const cleaned = response.text
-  .replace(/```json/g, "")
-  .replace(/```/g, "")
-  .trim();
+  let lastError;
+  for (const model of MODELS_TO_TRY) {
+    try {
+      console.log(`[Gemini] extractMedicalData trying model: ${model}`);
+      const response = await ai.models.generateContent({
+        model,
+        contents: [
+          { inlineData: { data: buffer.toString("base64"), mimeType } },
+          { text: prompt }
+        ],
+      });
 
-return JSON.parse(cleaned);
-  } catch (error) {
-    console.error("Gemini Error:", error);
-    throw error;
+      const cleaned = response.text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const result = JSON.parse(cleaned);
+      console.log(`[Gemini] extractMedicalData success with model: ${model}`);
+      return result;
+    } catch (error) {
+      const status = error?.status ?? error?.response?.status;
+      console.warn(`[Gemini] extractMedicalData model ${model} failed (status ${status}):`, error?.message ?? error);
+      lastError = error;
+      if (status !== 429 && status !== 503) throw error;
+    }
   }
+
+  console.error("[Gemini] extractMedicalData all models exhausted");
+  throw lastError;
 };
 
 export const chatWithGemini = async (message, history = []) => {
-  try {
-    const formattedContents = [];
-    
-    // Format history for Gemini
-    history.forEach(item => {
-      formattedContents.push({
-        role: item.role === "user" ? "user" : "model",
-        parts: [{ text: item.text }]
-      });
-    });
-    
-    // Add the new user message
-    formattedContents.push({
-      role: "user",
-      parts: [{ text: message }]
-    });
+  const MODELS_TO_TRY = ["gemini-2.0-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"];
 
-    const systemPrompt = `You are VitalSync's AI Health Assistant, a professional and helpful medical chatbot.
+  const systemPrompt = `You are VitalSync's AI Health Assistant, a professional and helpful medical chatbot.
 Your main role is to answer health, medical, wellness, fitness, diet, and nutrition questions.
 
 CRITICAL RULES:
@@ -141,17 +97,44 @@ CRITICAL RULES:
    - Example refusal response: "I'm sorry, but as the VitalSync Health Assistant, I can only help you with health, fitness, medical, and wellness related questions."
 3. Keep your advice informative, friendly, and structured. Always advise the user to consult a human medical doctor or healthcare provider for professional medical diagnosis.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: formattedContents,
-      config: {
-        systemInstruction: systemPrompt
-      }
-    });
+  const formattedContents = [];
 
-    return response.text;
-  } catch (error) {
-    console.error("Gemini Chat Error:", error);
-    throw error;
+  // Format history for Gemini
+  history.forEach(item => {
+    formattedContents.push({
+      role: item.role === "user" ? "user" : "model",
+      parts: [{ text: item.text }]
+    });
+  });
+
+  // Add the new user message
+  formattedContents.push({
+    role: "user",
+    parts: [{ text: message }]
+  });
+
+  let lastError;
+  for (const model of MODELS_TO_TRY) {
+    try {
+      console.log(`[Gemini] Trying model: ${model}`);
+      const response = await ai.models.generateContent({
+        model,
+        contents: formattedContents,
+        config: {
+          systemInstruction: systemPrompt
+        }
+      });
+      console.log(`[Gemini] Success with model: ${model}`);
+      return response.text;
+    } catch (error) {
+      const status = error?.status ?? error?.response?.status;
+      console.warn(`[Gemini] Model ${model} failed (status ${status}):`, error?.message ?? error);
+      lastError = error;
+      // Only fall through to next model on quota/rate-limit errors
+      if (status !== 429 && status !== 503) throw error;
+    }
   }
+
+  console.error("[Gemini] All models exhausted:", lastError);
+  throw lastError;
 };

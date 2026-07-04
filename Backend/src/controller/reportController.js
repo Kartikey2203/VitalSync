@@ -111,10 +111,34 @@ export const getLatestReport = async (req, res) => {
   }
 };
 
+// One-time migration: assign all orphaned reports (userId: null) to the current user
+export const claimOrphanedReports = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const result = await Report.updateMany(
+      { $or: [{ userId: null }, { userId: { $exists: false } }] },
+      { $set: { userId } }
+    );
+    return res.status(200).json({
+      success: true,
+      message: `Claimed ${result.modifiedCount} orphaned report(s) for your account.`,
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const getAllReports = async (req, res) => {
   try {
-    const reports = await Report.find({ userId: req.user?._id })
-      .sort({ createdAt: -1 });
+    const userId = req.user?._id;
+    console.log("[getAllReports] Querying for userId:", userId);
+
+    const reports = await Report.find({ userId }).sort({ createdAt: -1 });
+
+    // Debug: also count total reports regardless of user
+    const totalInDb = await Report.countDocuments();
+    console.log(`[getAllReports] Found ${reports.length} reports for this user. Total in DB: ${totalInDb}`);
 
     return res.status(200).json({
       success: true,
@@ -170,9 +194,13 @@ export const chatDiagnose = async (req, res) => {
       reply,
     });
   } catch (error) {
-    return res.status(500).json({
+    const status = error?.status ?? 500;
+    const isQuota = status === 429;
+    return res.status(status).json({
       success: false,
-      message: error.message,
+      message: isQuota
+        ? "AI service quota exceeded. Please try again in a few minutes."
+        : error.message,
     });
   }
 };
