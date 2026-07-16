@@ -7,7 +7,7 @@ function DashboardLayout({ children }) {
       {/* <Sidebar /> */}
       <div className="content" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
         {/* <Topbar /> */}
-        <div className="dashboard-scrollable" style={{ flex: 1, overflowY: 'auto' }}>
+        <div className="dashboard-scrollable" style={{ flex: 1, overflowY: 'auto', paddingTop: '70px' }}>
           {children}
         </div>
       </div>

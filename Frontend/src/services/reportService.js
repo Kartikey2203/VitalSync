@@ -57,18 +57,4 @@ export const deleteReport = async (id) => {
     }
   );
   return response.data;
-};
-
-export const chatDiagnose = async (message, history) => {
-  const token = localStorage.getItem("token");
-  const response = await axios.post(
-    `${API_URL}/diagnose`,
-    { message, history },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
-  return response.data;
-};
+};

@@ -62,7 +62,6 @@ function Home() {
           <li><a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a></li>
           <li><a href="/dashboard" onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }}>Overview</a></li>
           <li><a href="/records" onClick={(e) => { e.preventDefault(); navigate('/records'); }}>Records</a></li>
-          <li><a href="/diagnose" onClick={(e) => { e.preventDefault(); navigate('/diagnose'); }}>Diagnose</a></li>
         </ul>
         <div className="nav-right">
           {user ? (

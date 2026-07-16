@@ -1,6 +1,6 @@
 /* dashboard.css */
 .vitalsync-landing .dashboard-hero {
-  padding: 100px 40px 60px;
+  padding: 30px 40px 60px;
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
@@ -72,7 +72,7 @@
 }
 
 .vitalsync-landing .box-meal-plan {
-  grid-column: span 5;
+  grid-column: span 7;
   display: flex;
   flex-direction: column;
 }
@@ -82,7 +82,7 @@
 }
 
 .vitalsync-landing .box-report-summary {
-  grid-column: span 4;
+  grid-column: span 2;
 }
 
 /* Health Score Card */
@@ -209,7 +209,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  justify-content: space-between;
+  gap: 8px;
+  justify-content: flex-start;
 }
 
 .vitalsync-landing .nut-item {

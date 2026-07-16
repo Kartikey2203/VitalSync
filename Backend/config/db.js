@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+ import mongoose from "mongoose";
 import dns from "dns";
 
 // Set DNS servers to public DNS to prevent ECONNREFUSED errors during MongoDB SRV lookup in Node.js

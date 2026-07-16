@@ -26,7 +26,7 @@ await s3.send(
 );
 const aiResult = await extractMedicalData(
   file.buffer,
-  file.mimetype
+  file.mimetype 
 );
 
 const report = await Report.create({
@@ -176,32 +176,4 @@ export const deleteReport = async (req, res) => {
   }
 };
 
-export const chatDiagnose = async (req, res) => {
-  try {
-    const { message, history } = req.body;
-
-    if (!message) {
-      return res.status(400).json({
-        success: false,
-        message: "Message is required",
-      });
-    }
-
-    const reply = await chatWithGemini(message, history);
-
-    return res.status(200).json({
-      success: true,
-      reply,
-    });
-  } catch (error) {
-    const status = error?.status ?? 500;
-    const isQuota = status === 429;
-    return res.status(status).json({
-      success: false,
-      message: isQuota
-        ? "AI service quota exceeded. Please try again in a few minutes."
-        : error.message,
-    });
-  }
-};
 

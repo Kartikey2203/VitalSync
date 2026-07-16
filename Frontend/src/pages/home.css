@@ -121,8 +121,8 @@
 .vitalsync-landing .hero {
   text-align: center;
   position: relative;
-  min-height: calc(100vh - 100px);
-  /* Full screen minus nav height */
+  min-height: 100vh;
+  /* Full screen */
   display: flex;
   flex-direction: column;
   justify-content: center;

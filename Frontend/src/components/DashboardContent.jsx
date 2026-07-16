@@ -44,8 +44,7 @@ function DashboardContent() {
       await processUpload(file);
     }
   };
-
-  const handleFileSelect = async (e) => {
+ const handleFileSelect = async (e) => {
     const file = e.target.files[0];
     if (file) {
       await processUpload(file);
@@ -198,7 +197,7 @@ function DashboardContent() {
       <div className="hero-card box-deficiency-summary">
         <div className="card-header">
           <h3>Deficiency Summary</h3>
-          <span className="view-all">View All</span>
+          {/* <span className="view-all">View All</span> */}
         </div>
         <div className="deficiency-grid">
           {report?.aiResult?.deficiencies ? (
@@ -275,31 +274,49 @@ function DashboardContent() {
       <div className="hero-card box-nutrient-overview">
         <h3>Nutrient Overview</h3>
         <div className="nutrient-list">
-          {report?.aiResult?.nutrients ? (
-            Object.entries(report.aiResult.nutrients).map(([key, val]) => {
-              // val may be a plain number or an object { value, status }
+          {report?.aiResult?.nutrients ? (() => {
+            const statusMap = {
+              Low:        { width: "15%", color: "#ff5e5e" },
+              Normal:     { width: "60%", color: "#4eb880" },
+              Borderline: { width: "70%", color: "#f9a03f" },
+              High:       { width: "88%", color: "#f9a03f" },
+            };
+            const entries = Object.entries(report.aiResult.nutrients).filter(([, val]) => {
               const raw = typeof val === "object" && val !== null ? val.value : val;
-              const numVal = raw != null && !isNaN(Number(raw)) ? Number(raw) : null;
+              return raw !== null && raw !== undefined && raw !== 0 && raw !== "0";
+            }).slice(0, 5);
+            if (entries.length === 0) {
+              return <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>No nutrient data available in this report.</p>;
+            }
+            return entries.map(([key, val]) => {
+              const isObj = typeof val === "object" && val !== null;
+              const raw = isObj ? val.value : val;
+              const status = isObj ? val.status : null;
+              const style = statusMap[status] || { width: "40%", color: "#c6f135" };
+              const displayVal = raw !== null && raw !== undefined ? raw : "--";
               return (
-                <div className="nut-item" key={key}>
-                  <div className="nut-item-row">
-                    <span style={{ textTransform: "capitalize" }}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                    <span>{numVal != null ? `${numVal}%` : "--"}</span>
+                <div className="nut-item" key={key} style={{ gap: "3px" }}>
+                  <div className="nut-item-row" style={{ fontSize: "11px" }}>
+                    <span style={{ textTransform: "capitalize", color: "rgba(255,255,255,0.8)" }}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                    <span style={{ color: style.color, fontWeight: "700", fontSize: "11px" }}>{status || displayVal}</span>
                   </div>
-                  <div className="bar">
-                    <div
-                      className="fill"
-                      style={{ width: numVal != null ? `${numVal}%` : "0%", height: "100%", borderRadius: "6px" }}
-                    ></div>
+                  <div className="bar" style={{ height: "4px" }}>
+                    <div className="fill" style={{ width: style.width, background: style.color, height: "100%", borderRadius: "4px", boxShadow: `0 0 5px ${style.color}70` }}></div>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1px" }}>
+                    <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)" }}>Val: <strong style={{ color: "rgba(255,255,255,0.55)" }}>{displayVal}</strong></span>
+                    {isObj && val.min != null && val.max != null && (
+                      <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.25)" }}>{val.min}–{val.max}</span>
+                    )}
                   </div>
                 </div>
               );
-            })
-          ) : (
+            });
+          })() : (
             <>
               {["Iron", "Vitamin D", "Vitamin B12", "Calcium", "Folate", "Magnesium"].map((name) => (
                 <div className="nut-item" key={name}>
-                  <div className="nut-item-row"><span>{name}</span><span>--%</span></div>
+                  <div className="nut-item-row"><span>{name}</span><span style={{ color: "rgba(255,255,255,0.3)" }}>--</span></div>
                   <div className="bar"><div className="fill" style={{ width: "0%" }}></div></div>
                 </div>
               ))}
@@ -307,6 +324,7 @@ function DashboardContent() {
           )}
         </div>
       </div>
+
 
       {/* 7. Report Summary */}
       <div className="hero-card box-report-summary">
@@ -316,18 +334,17 @@ function DashboardContent() {
         <div className="rep-row"><span>Low</span> <span className="text-red">{report?.aiResult?.reportSummary?.low || "--"}</span></div>
         <div className="rep-row"><span>High</span> <span className="text-red">{report?.aiResult?.reportSummary?.high || "--"}</span></div>
         <div className="rep-row"><span>Borderline</span> <span className="text-orange">{report?.aiResult?.reportSummary?.borderline || "--"}</span></div>
-        <button className="btn-outline-full">View Full Report</button>
       </div>
 
       {/* 5. Meal Plan Preview */}
       <div className="hero-card box-meal-plan">
-         <div className="card-header">
+        <div className="card-header">
           <h3>Meal Plan Preview</h3>
-          <span className="view-all">View Full Plan</span>
+          {/* <span className="view-all">View Full Plan</span> */}
         </div>
-        <div className="meal-tabs">
+        <div className="meal-tabs" style={{ marginBottom: "12px" }}>
           {["day1", "day2", "day3", "day4", "day5", "day6", "day7"].map((day, idx) => (
-            <button 
+            <button
               key={day}
               className={`tab ${selectedDay === day ? "active" : ""}`}
               onClick={() => setSelectedDay(day)}
@@ -336,19 +353,19 @@ function DashboardContent() {
             </button>
           ))}
         </div>
-        <div className="meal-content">
-           <div className="meal-col">
-             <h4>Breakfast</h4>
-             <ul><li>{report?.aiResult?.mealPlan?.[selectedDay]?.breakfast || "--"}</li></ul>
-           </div>
-           <div className="meal-col">
-             <h4>Lunch</h4>
-             <ul><li>{report?.aiResult?.mealPlan?.[selectedDay]?.lunch || "--"}</li></ul>
-           </div>
-           <div className="meal-col">
-             <h4>Dinner</h4>
-             <ul><li>{report?.aiResult?.mealPlan?.[selectedDay]?.dinner || "--"}</li></ul>
-           </div>
+        <div className="meal-content" style={{ flex: 1, gap: "10px" }}>
+          <div className="meal-col">
+            <h4>Breakfast</h4>
+            <ul><li style={{ fontSize: "13px", lineHeight: "1.55", padding: "12px 14px" }}>{report?.aiResult?.mealPlan?.[selectedDay]?.breakfast || "--"}</li></ul>
+          </div>
+          <div className="meal-col">
+            <h4>Lunch</h4>
+            <ul><li style={{ fontSize: "13px", lineHeight: "1.55", padding: "12px 14px" }}>{report?.aiResult?.mealPlan?.[selectedDay]?.lunch || "--"}</li></ul>
+          </div>
+          <div className="meal-col">
+            <h4>Dinner</h4>
+            <ul><li style={{ fontSize: "13px", lineHeight: "1.55", padding: "12px 14px" }}>{report?.aiResult?.mealPlan?.[selectedDay]?.dinner || "--"}</li></ul>
+          </div>
         </div>
       </div>
 
@@ -382,7 +399,7 @@ function DashboardContent() {
           ) : (
             <p>No report available to generate insights. Upload your lab reports to receive personalized health recommendations.</p>
           )}
-          <button className="btn-outline-small">View Detailed Insights</button>
+          {/* <button className="btn-outline-small">View Detailed Insights</button> */}
         </div>
       </div>
 

@@ -28,8 +28,8 @@ app.get("/", (req, res) => {
 
 app.listen(5000, () => {
   console.log("Server Running on Port 5000");
-  console.log(process.env.MONGO_URI);
+  // console.log(process.env.MONGO_URI);
   console.log(process.env.AWS_REGION);
-console.log(process.env.AWS_BUCKET_NAME);
-console.log("KEY:", process.env.AWS_ACCESS_KEY_ID);
+// console.log(process.env.AWS_BUCKET_NAME);
+// console.log("KEY:", process.env.AWS_ACCESS_KEY_ID);
 });

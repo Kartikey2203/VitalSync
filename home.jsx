@@ -21,7 +21,6 @@ function Home() {
          <Link to="/"><li>Home</li></Link>
           <Link to="/overview"><li>Overview</li></Link>
           <Link to="/records"><li>Records</li></Link>
-          <Link to="/diagnose"><li>Diagnose</li></Link>
         </ul>
 
         <div className="landing-nav-actions">
